@@ -1,0 +1,47 @@
+name: progle
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: progle
+      POSTGRES_USER: progle_admin
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?задайте POSTGRES_PASSWORD в .env}
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD:?задайте APP_DB_PASSWORD в .env}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./docker/postgres/init-app-role.sh:/docker-entrypoint-initdb.d/init-app-role.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U progle_admin -d progle"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    security_opt:
+      - no-new-privileges:true
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://progle_app:${APP_DB_PASSWORD}@db:5432/progle
+      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID:?задайте DISCORD_CLIENT_ID в .env}
+      DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET:?задайте DISCORD_CLIENT_SECRET в .env}
+      DISCORD_REDIRECT_URI: ${DISCORD_REDIRECT_URI:?задайте DISCORD_REDIRECT_URI в .env}
+      JWT_SECRET: ${JWT_SECRET:?задайте JWT_SECRET в .env}
+      FRONTEND_URL: ${FRONTEND_URL:?задайте FRONTEND_URL в .env}
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-8001}:8000"
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  db_data:
