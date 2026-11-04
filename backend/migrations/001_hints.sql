@@ -1,0 +1,3 @@
+ALTER TABLE words ADD COLUMN IF NOT EXISTS hint_position integer;
+ALTER TABLE words ADD COLUMN IF NOT EXISTS description text;
+ALTER TABLE games ADD COLUMN IF NOT EXISTS hints_used integer NOT NULL DEFAULT 0;

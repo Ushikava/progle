@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Progle">
+  <style>
+    .cursor { animation: blink 1.1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
+  </style>
+
+  <rect x="0.5" y="0.5" width="63" height="63" rx="14" fill="#1a1d23" stroke="#343943"/>
+
+  <!-- буква P из плиток игрового поля (сетка 4×5, плитка 9, шаг 11) и курсор: P_ -->
+  <g transform="translate(11 5.5)">
+    <!-- correct -->
+    <g fill="#538d4e">
+      <rect x="0" y="0" width="9" height="9" rx="1.5"/>
+      <rect x="11" y="0" width="9" height="9" rx="1.5"/>
+      <rect x="0" y="11" width="9" height="9" rx="1.5"/>
+      <rect x="0" y="22" width="9" height="9" rx="1.5"/>
+      <rect x="11" y="22" width="9" height="9" rx="1.5"/>
+      <rect x="0" y="33" width="9" height="9" rx="1.5"/>
+      <rect x="0" y="44" width="9" height="9" rx="1.5"/>
+    </g>
+
+    <!-- present -->
+    <g fill="#c9a93b">
+      <rect x="22" y="0" width="9" height="9" rx="1.5"/>
+      <rect x="33" y="11" width="9" height="9" rx="1.5"/>
+      <rect x="22" y="22" width="9" height="9" rx="1.5"/>
+    </g>
+
+    <rect class="cursor" x="22" y="47" width="20" height="6" rx="1.5" fill="#eceef2"/>
+  </g>
+</svg>
